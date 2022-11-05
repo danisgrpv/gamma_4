@@ -5,18 +5,29 @@ avogadro = 6.02214076E+23
 barn = 1E-24
 
 min_en = float(input('Минимальная энергия: '))
+system = input('windows (w) or linux (l): ')
 
-cs = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/cross_sections_with_header.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)
-materials = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/materials_property.xlsx', header=0, index_col=0, sheet_name=['PROPERTY', 'ELEMENTS'])
+if system == 'l':
+    cs = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/cross_sections_with_header.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)
+    materials = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/materials_property.xlsx', header=0, index_col=0, sheet_name=['PROPERTY', 'ELEMENTS'])
 
-elements = materials['ELEMENTS']
-total = cs['TOTAL']
-absorbt = cs['ABSORBT']
+    elements = materials['ELEMENTS']
+    total = cs['TOTAL']
+    absorbt = cs['ABSORBT']
 
-total_general = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/GENERAL/GENERAL_01.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)['TOTAL']
-absorbt_general = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/GENERAL/GENERAL_01.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)['ABSORBT']
+    total_general = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/GENERAL/GENERAL_01.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)['TOTAL']
+    absorbt_general = pd.read_excel(r'/home/danis/work/python_works/gamma_4/Scripts/DATA/GENERAL/GENERAL_01.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)['ABSORBT']
 
+if system == 'w':
+    cs = pd.read_excel(r'D:\Учеба\Практика\Диплом\gamma_4\Scripts\DATA\cross_sections_with_header.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)
+    materials = pd.read_excel(r'D:\Учеба\Практика\Диплом\gamma_4\Scripts\DATA\materials_property.xlsx', header=0, index_col=0, sheet_name=['PROPERTY', 'ELEMENTS'])
 
+    elements = materials['ELEMENTS']
+    total = cs['TOTAL']
+    absorbt = cs['ABSORBT']
+
+    total_general = pd.read_excel(r'D:\Учеба\Практика\Диплом\gamma_4\Scripts\DATA\GENERAL\GENERAL_01.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)['TOTAL']
+    absorbt_general = pd.read_excel(r'D:\Учеба\Практика\Диплом\gamma_4\Scripts\DATA\GENERAL\GENERAL_01.xlsx', header=0, sheet_name=['TOTAL', 'ABSORBT'], dtype=np.float64)['ABSORBT']
 
 def edge_to_dict(number, marker_side, dframe):
 
