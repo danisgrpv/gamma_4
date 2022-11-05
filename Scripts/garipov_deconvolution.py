@@ -55,7 +55,7 @@ def Gold(A, b, en, init_spectrum, dec_en, x0=False, it=None, w=False, d=False):
         Y = np.dot(A.T, np.dot(W.T, np.dot(W, b)))
         # Создание матрицы AX = A.T * W.T * W * A * x
         AX = np.dot(A.T, np.dot(W.T, np.dot(W, np.dot(A, previous_x))))
-        AX[AX == 0] = np.nextafter(0, 1)
+        AX[AX == 0] = np.nextafter(0, 1)*1e20
         current_x = 1.0 * previous_x + (previous_x / AX) * (Y - AX)
         previous_x = current_x
 
