@@ -152,6 +152,11 @@ class R:
         out = np.exp(-mat.cs('t')*self.thickness*avogadro*mat.ro()*barn/mat.M())
         return out['cs'].to_numpy(dtype=np.float64)
 
+    def f_ro(self):
+        mat = self.material
+        out = np.exp(-mat.cs('t')*self.thickness*avogadro*barn/mat.M())
+        return out['cs'].to_numpy(dtype=np.float64)
+
     def f_at(self):
         mat = self.material
         out = (mat.cs('a')/mat.cs('t'))*np.exp(-mat.cs('t')*self.thickness*avogadro*mat.ro()*barn/mat.M())
