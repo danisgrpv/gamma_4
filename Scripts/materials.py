@@ -152,7 +152,7 @@ class R:
         out = np.exp(-mat.cs('t')*self.thickness*avogadro*mat.ro()*barn/mat.M())
         return out['cs'].to_numpy(dtype=np.float64)
 
-    def f_ro(self):
+    def f_mass(self):
         mat = self.material
         out = np.exp(-mat.cs('t')*self.thickness*avogadro*barn/mat.M())
         return out['cs'].to_numpy(dtype=np.float64)
@@ -171,6 +171,14 @@ class R:
         mat = self.material
         en = mat.en()['en'].to_numpy(dtype=np.float64)
         brem = self.f() / en * ((energy - en) / energy)
+        brem[brem < 0] = 0
+        
+        return brem / max(brem)
+
+    def brem_mass(self, energy):
+        mat = self.material
+        en = mat.en()['en'].to_numpy(dtype=np.float64)
+        brem = self.f_mass() / en * ((energy - en) / energy)
         brem[brem < 0] = 0
         
         return brem / max(brem)
