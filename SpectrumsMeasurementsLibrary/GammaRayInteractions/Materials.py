@@ -69,6 +69,5 @@ class Material:
         """
         Возвращает индекс К края поглощения данного материала в общей энергетической сетке MESH
         """
-        energy_mesh_list = ENERGY_MESH.tolist()
-        k_edge_index = energy_mesh_list.index(self.K_edge_energy())
+        k_edge_index = ENERGY_MESH.index(self.K_edge_energy())
         return k_edge_index
