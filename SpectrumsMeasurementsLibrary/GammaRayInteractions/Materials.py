@@ -17,11 +17,14 @@ class Material:
         self.number = number - 1 # номер элемента в массиве на единицу меньше номера в таблице Менделеева
 
 
-    def mesh(self):
+    def mesh(self, marker='ndarray'):
         """
         Возвращает энергетическую сетку MESH, на которой построенны все данные
         """
-        return ENERGY_MESH
+        if marker == 'ndarray':
+            return np.array(ENERGY_MESH)
+        if marker == 'list':
+            return ENERGY_MESH
 
 
     def cs(self, marker):
@@ -51,7 +54,7 @@ class Material:
         return MU[self.number]
 
 
-    def K_edge_value(self):
+    def k_edge_value(self):
         """
         Возвращает значение сечения в К крае поглощения
         """
@@ -59,7 +62,7 @@ class Material:
         return all_edges[-1]
 
 
-    def K_edge_energy(self):
+    def k_edge_energy(self):
         """
         Возвращает значение сечения в К крае поглощения
         """
@@ -67,11 +70,11 @@ class Material:
         return all_edges_energies[-1]
 
 
-    def K_edge_index(self):
+    def k_edge_index(self):
         """
         Возвращает индекс К края поглощения данного материала в общей энергетической сетке MESH
         """
-        k_edge_index = ENERGY_MESH.index(self.K_edge_energy())
+        k_edge_index = ENERGY_MESH('list').index(self.k_edge_energy())
         return k_edge_index
 
 
@@ -79,7 +82,7 @@ class Material:
         """
         Возвращает толщину материала, необходимую для обеспечения заданного пропускания в К крае поглощения
         """
-        linear_absorption_coefficient_in_k_edge = self.ro()*self.K_edge_value()*AVOGADRRO*BARN / self.mu()
+        linear_absorption_coefficient_in_k_edge = self.ro()*self.k_edge_value()*AVOGADRRO*BARN / self.mu()
         thickness_that_needed = np.log(level) / linear_absorption_coefficient_in_k_edge
         return thickness_that_needed
 
@@ -141,10 +144,11 @@ class R:
         Параметр: энергия налетающего пучка электронов
         """
         energy = self.material.mesh()
-        normalizing_factor = (incident_electron_beam_energy - energy) / incident_electron_beam_energy
-        emitted_radiation = self.attenuation() / (energy * normalizing_factor)
+        normalizing_coefficient = (incident_electron_beam_energy - energy) / incident_electron_beam_energy
+        emitted_radiation = self.transmission() * normalizing_coefficient
         emitted_radiation[emitted_radiation < 0] = 0
-        return emitted_radiation
+        normalizing_emitted_spectrum = emitted_radiation * emitted_radiation.max()
+        return normalizing_emitted_spectrum
 
 
     def mass_emitted_bremsstrahlung(self, incident_electron_beam_energy):
@@ -153,7 +157,8 @@ class R:
         Параметр: энергия налетающего пучка электронов
         """
         energy = self.material.mesh()
-        normalizing_factor = (incident_electron_beam_energy - energy) / incident_electron_beam_energy
-        emitted_radiation = self.mass_attenuation() / (energy * normalizing_factor)
+        normalizing_coefficient = (incident_electron_beam_energy - energy) / incident_electron_beam_energy
+        emitted_radiation = self.mass_transmission() * normalizing_coefficient
         emitted_radiation[emitted_radiation < 0] = 0
-        return emitted_radiation
+        normalizing_emitted_spectrum = emitted_radiation / emitted_radiation.max()
+        return normalizing_emitted_spectrum
