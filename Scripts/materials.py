@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from SpectrumsMeasurementsLibrary.CrossSectionsData import cross_sections
 
 avogadro = 6.02214076E+23
 barn = 1E-24
