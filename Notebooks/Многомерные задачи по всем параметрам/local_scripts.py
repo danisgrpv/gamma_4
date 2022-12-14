@@ -12,7 +12,7 @@ def initialization_brem(material_z, beam_energy, tick=0.01):
     
     coefficient = Material(material_z).mu()/material_z
     target = R(material_z, tick*coefficient)
-    bremsstrahlung = target.emitted_bremsstrahlung(beam_energy)
+    bremsstrahlung = target.mass_emitted_bremsstrahlung(beam_energy)
     
     return bremsstrahlung
 
