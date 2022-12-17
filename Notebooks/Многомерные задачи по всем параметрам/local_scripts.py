@@ -1,7 +1,9 @@
 import time
 import numpy as np
+from CrossSectionsLibrary.cross_sections_data import ENERGY_MESH
 from GammaRayInteractions.Materials import Material, R
 from NumericalMethods.simpson_rule import simpson_rule
+import numpy as np
 
 def initialization_brem(material_z, beam_energy, tick=0.01):
     """
@@ -82,3 +84,23 @@ def apply_function_to_matrix(objective_matrix, func, K):
             print(f'Выполнено {col+1} из {num_col}. Время: {round(time.time()-start_time, 4)} секунды')
         print(f'ВЫПОЛНЕНО {row+1} из {num_row} СТОЛБЦОВ. Время: {round(time.time()-start_time, 4)} секунды') 
     return np.array(empty_matrix)
+
+
+def get_measuring_systems_signals(brem, new_mesh, measuring_system_matrix):
+
+    measuring_systems_signals = []
+
+    new_brem = np.interp(new_mesh, ENERGY_MESH, brem)
+    for ind, matrix in enumerate(measuring_system_matrix):
+        signals = matrix @ new_brem
+        measuring_systems_signals.append(signals)
+
+    return np.array(measuring_systems_signals)
+
+
+def get_brem_measuring_results(bremsstrahlungs_matrix, measuring_system_matrix, new_mesh, empty):
+    for row, val1 in enumerate(empty):
+        for col, val2 in enumerate(empty[row]):
+            empty[row][col] = get_measuring_systems_signals(bremsstrahlungs_matrix[row][col], new_mesh, measuring_system_matrix)
+
+    return empty

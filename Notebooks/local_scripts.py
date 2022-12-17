@@ -55,8 +55,8 @@ def get_integral_signals(bremsstrahlung, K):
     2) матрица измерительной системы
     """
     measurements = K*bremsstrahlung
-    integral_signals = np.apply_along_axis(integrate_the_row, arr=measurements, axis=1)
-    return integral_signals
+    # integral_signals = np.apply_along_axis(integrate_the_row, arr=measurements, axis=1)
+    return measurements
 
 
 def apply_function_to_matrix(objective_matrix, func, K):
